@@ -96,7 +96,7 @@ namespace OBJECTS
 
 	void CubeObject::_Draw(float *zb, int *video, int nWidth, int nHeight)
 	{
-		this->rotation += 1.0;
+		this->rotation += 3.0;
 		for(int n = 0; n < this->_mesh.num_i; n++)
 		{
 			_TRIANGLE3I &triangle = this->_mesh.ib[n];
@@ -114,7 +114,7 @@ namespace OBJECTS
 			v0 = m._Multiply(v0);
 			v1 = m._Multiply(v1);
 			v2 = m._Multiply(v2);
-			m = _MATRIX16F::_RotateY(1.0*this->rotation);
+			m = _MATRIX16F::_RotateY(1.5*this->rotation);
 			v0 = m._Multiply(v0);
 			v1 = m._Multiply(v1);
 			v2 = m._Multiply(v2);

@@ -219,47 +219,39 @@ namespace OBJECTS
 						if(zb[y*w+x] < z) continue;
 						zb[y*w+x] = z;
 					}
-					// Milan's iridescent shader ^_^ (per triangle version) a creative use of Rodrigues' Rotation Formula 
+					// Milan's iridescent shader ^_^ a creative use of Rodrigues' Rotation Formula (1840 AD)
 					///////////////////////////////////////////////////////////////////////
 					_VERTEX4F v01 = v1 - v0;
 					_VERTEX4F v02 = v2 - v0;
-					_VERTEX4F snorm = v01._CrossProduct(v02, v01);
-					snorm._Normalize(); //surface normal
-					
-					if(snorm._DotProduct(_VERTEX4F(0.0, 0.0, 1.0, 0.0), snorm) < 0.0) continue;
+					_VERTEX4F snorm = v01._CrossProduct(v02, v01); //surface normal
+					snorm._Normalize();
 
+					_VERTEX4F posi((float)x, (float) y, alpha*v0.z + beta*v1.z + gamma*v2.z, 1.0); // Use screen X and Y and Barycentric Coordinates to determin the Z Depth for the position Coordinate
+					_VERTEX4F vLight = posi - _VERTEX4F(400.0, 200.0, -200.0, 1.0); // Object to Light Vector
+					vLight._Normalize();
+					_VERTEX4F camera1(w/2.0, h/2.0, -200.0, 0.0);
+					_VERTEX4F cameraV = (camera1 - posi); // Object to Camera Vector
+					cameraV._Normalize();
+					
 					_VERTEX4F k(1.0, 1.0, 1.0, 0.0); // the reference vector, we will be 'rotating' our base color around this point (1.0 r 1.0 g 1.0 b is white, the center of the color wheel of course!?)		
 					k._Normalize();
-
-					_VERTEX4F posi((float)x, (float) y, alpha*v0.z + beta*v1.z + gamma*v2.z, 1.0);
-					_VERTEX4F camera1(w/2.0, h/2.0, -200.0, 0.0);
-					_VERTEX4F cameraV = (posi - camera1);
-					cameraV._Normalize();
-					//_VERTEX4F light1(-5.0, -10.0, -2.5, 0.0);
-					//light1._Normalize();
-
-					float CDN = cameraV._DotProduct(cameraV, snorm);
-					//float LDN = ClampIt(light1._DotProduct(light1, snorm));
-		
-					//CDN = abs(CDN);
-					//float theta = sqrt(1.0 / CDN);
-					float theta = CDN;
-					_VERTEX4F v(0.1, 0.43, 0.9, 0.0); // a color masquerading as a vector!!? madness!
-
+					float theta = cameraV._DotProduct(cameraV, snorm);
+					_VERTEX4F v(0.9, 0.3, 0.1, 0.0); // a color masquerading as a vector!!? madness!
 					// ready? ok, here it is!
 					_VERTEX4F IRI = (v*cos(theta) + (k._CrossProduct(v, k))*sin(theta)) + (k*(k._DotProduct(k, v))) * (1 - cos(theta));
+
+					// Blinn Shader!!!
+					_VERTEX4F vReflection = (cameraV - (snorm * 2.0 * snorm._DotProduct(snorm, cameraV)));
+					float fSpecular = ClampIt(vReflection._DotProduct(vLight, vReflection));
+					float fLambert = ClampIt(vLight._DotProduct(vLight, snorm));
+					IRI.x = 255.0 * ClampIt((IRI.x * fLambert) + pow((double)fSpecular, 5.0) + 0.05); // Red
+					IRI.y = 255.0 * ClampIt((IRI.y * fLambert) + pow((double)fSpecular, 5.0) + 0.05); // Green
+					IRI.z = 255.0 * ClampIt((IRI.z * fLambert) + pow((double)fSpecular, 5.0) + 0.05); // Blue
 
 					//float redC = 255.0 * (c0.r * alpha + c1.r * beta + c2.r * gamma);
 					//float greenC = 255.0 * (c0.g * alpha + c1.g * beta + c2.g * gamma);
 					//float blueC = 255.0 * (c0.b * alpha + c1.b * beta + c2.g * gamma);
-					//int color = CORE::_CreateColor(255, (int)redC, (int)greenC, (int)blueC);
-					IRI.x = abs(IRI.x);
-					IRI.y = abs(IRI.y);
-					IRI.z = abs(IRI.z);					
-					IRI.x = ClampIt(IRI.x) * 255.0;
-					IRI.y = ClampIt(IRI.y) * 255.0;
-					IRI.z = ClampIt(IRI.z) * 255.0;
-					int color = CORE::_CreateColor(255, (int)IRI.x, (int)IRI.y, (int)IRI.z); 
+					int color = CORE::_CreateColor(255, (int)IRI.x, (int)IRI.y, (int)IRI.z);
 					CORE::_PutPixel(video, w, h, x, y, color);
 				}
 			}
@@ -281,7 +273,12 @@ namespace OBJECTS
 		if(ymax < 0) ymax = 0;
 		if(ymax > h - 1) ymax = h - 1;
 		if(ymin >= ymax) return;
-		
+		_VERTEX4F v01 = v1 - v0;
+		_VERTEX4F v02 = v2 - v0;
+		_VERTEX4F snorm = v01._CrossProduct(v02, v01); //surface normal
+		snorm._Normalize();
+		if(snorm._DotProduct(_VERTEX4F(0.0, 0.0, 1.0, 0.0), snorm) < 0.0) return;	
+
 		_SHASH_ALG(zb, video, w, h, v0, v1, v2, xmin, xmax, ymin, ymax, c0, c1, c2);
 	}
 }
