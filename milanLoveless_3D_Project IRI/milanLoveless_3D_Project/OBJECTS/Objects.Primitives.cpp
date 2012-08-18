@@ -236,9 +236,9 @@ namespace OBJECTS
 					_VERTEX4F k(1.0, 1.0, 1.0, 0.0); // the reference vector, we will be 'rotating' our base color around this point (1.0 r 1.0 g 1.0 b is white, the center of the color wheel of course!?)		
 					k._Normalize();
 					float theta = cameraV._DotProduct(cameraV, snorm);
-					_VERTEX4F v(0.9, 0.3, 0.1, 0.0); // a color masquerading as a vector!!? madness!
+					_VERTEX4F v(0.7, 0.9, 0.1, 0.0); // a color masquerading as a vector!!? madness!
 					// ready? ok, here it is!
-					_VERTEX4F IRI = (v*cos(theta) + (k._CrossProduct(v, k))*sin(theta)) + (k*(k._DotProduct(k, v))) * (1 - cos(theta));
+					_VERTEX4F IRI = (v*cos(theta) + (k._CrossProduct(k, v))*sin(theta)) + (k*(k._DotProduct(k, v))) * (1.0 - cos(theta));
 
 					// Blinn Shader!!!
 					_VERTEX4F vReflection = (cameraV - (snorm * 2.0 * snorm._DotProduct(snorm, cameraV)));
