@@ -108,6 +108,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="OBJECTS\Objects.GameObject.cpp" />
+    <None Include="RESOURCES\clouds.png" />
+    <None Include="RESOURCES\clouds_NRM.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

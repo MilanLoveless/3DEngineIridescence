@@ -83,5 +83,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="OBJECTS\Objects.GameObject.cpp" />
+    <None Include="RESOURCES\clouds.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="RESOURCES\clouds_NRM.png">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
