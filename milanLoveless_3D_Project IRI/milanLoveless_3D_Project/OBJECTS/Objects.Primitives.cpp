@@ -238,7 +238,7 @@ namespace OBJECTS
 					float theta = cameraV._DotProduct(cameraV, snorm);
 					_VERTEX4F v(0.9, 0.3, 0.1, 0.0); // a color masquerading as a vector!!? madness!
 					// ready? ok, here it is!
-					_VERTEX4F IRI = (v*cos(theta) + (k._CrossProduct(v, k))*sin(theta)) + (k*(k._DotProduct(k, v))) * (1 - cos(theta));
+					_VERTEX4F IRI = (v*cos(theta) + (k._CrossProduct(k, v))*sin(theta)) + (k*(k._DotProduct(k, v))) * (1 - cos(theta));
 
 					// Blinn Shader!!!
 					_VERTEX4F vReflection = (cameraV - (snorm * 2.0 * snorm._DotProduct(snorm, cameraV)));
@@ -248,9 +248,6 @@ namespace OBJECTS
 					IRI.y = 255.0 * ClampIt((IRI.y * fLambert) + pow((double)fSpecular, 5.0) + 0.05); // Green
 					IRI.z = 255.0 * ClampIt((IRI.z * fLambert) + pow((double)fSpecular, 5.0) + 0.05); // Blue
 
-					//float redC = 255.0 * (c0.r * alpha + c1.r * beta + c2.r * gamma);
-					//float greenC = 255.0 * (c0.g * alpha + c1.g * beta + c2.g * gamma);
-					//float blueC = 255.0 * (c0.b * alpha + c1.b * beta + c2.g * gamma);
 					int color = CORE::_CreateColor(255, (int)IRI.x, (int)IRI.y, (int)IRI.z);
 					CORE::_PutPixel(video, w, h, x, y, color);
 				}
