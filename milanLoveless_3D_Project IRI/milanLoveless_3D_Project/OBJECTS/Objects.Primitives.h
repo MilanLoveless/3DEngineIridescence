@@ -70,19 +70,6 @@ namespace OBJECTS
 		_VERTEX4F surface_normal;
 	};
 /////////////////////////////////////////////////////////////////////////
-	class _TEXTURECHANNEL
-	{
-	public:
-		int *i_pUVI;
-		int i_NumTri;
-		_TRIANGLE3I *tri_pUV;
-
-	private:
-		static CORE::TEXTUREINFO *pTexture;
-		int *pTW, *pTH; //Width, Height of Texture Channels
-	};
-	
-/////////////////////////////////////////////////////////////////////////
 	class _MESH
 	{
 	public:
@@ -106,7 +93,12 @@ namespace OBJECTS
 		int num_uv;
 		_TEXTURE2F *uv;
 
-
+		///////////////////////////////////////////////
+		//texture channels
+		int num_textures;
+		int *pTW, *pTH; //Width, Height of Texture Channels
+		int **ppT; //Pixel data of Texture Channels
+		///////////////////////////////////////////////
 
 		int render_settings;
 	};
