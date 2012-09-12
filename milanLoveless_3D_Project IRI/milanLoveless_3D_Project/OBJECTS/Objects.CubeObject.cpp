@@ -130,17 +130,20 @@ namespace OBJECTS
 			_COLOR4F &c1 = this->_mesh.cb[triangle.b];
 			_COLOR4F &c2 = this->_mesh.cb[triangle.c];
 			
-			_MATRIX16F nn;
-			nn = _MATRIX16F::_Translate(_VERTEX4F(0.0, -150.0, 0.0, 0.0));
-			v0 = nn._Multiply(v0);
-			v1 = nn._Multiply(v1);
-			v2 = nn._Multiply(v2);
 			_MATRIX16F m;
+			m = _MATRIX16F::_Translate(_VERTEX4F(0.0, -150.0, 0.0, 0.0));
+			v0 = m._Multiply(v0);
+			v1 = m._Multiply(v1);
+			v2 = m._Multiply(v2);
 			m = _MATRIX16F::_RotateZ(1.0*this->rotation);
 			v0 = m._Multiply(v0);
 			v1 = m._Multiply(v1);
 			v2 = m._Multiply(v2);
 			m = _MATRIX16F::_RotateY(1.5*this->rotation);
+			v0 = m._Multiply(v0);
+			v1 = m._Multiply(v1);
+			v2 = m._Multiply(v2);
+			m = _MATRIX16F::_Scale(1.5, 1.5, 1.5);
 			v0 = m._Multiply(v0);
 			v1 = m._Multiply(v1);
 			v2 = m._Multiply(v2);
