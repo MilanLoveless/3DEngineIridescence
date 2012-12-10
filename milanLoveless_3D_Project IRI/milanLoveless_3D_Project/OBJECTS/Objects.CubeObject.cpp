@@ -17,8 +17,8 @@ namespace OBJECTS
 		//float zmin = -100.0, zmax = 100.0;
 
 		//Vertices for cube
-		this->_mesh.num_v = 20;
-		this->_mesh.vb = new _VERTEX4F[20];
+		this->_mesh.num_v = 21;
+		this->_mesh.vb = new _VERTEX4F[21];
 
 		//Initialize cube verticies
 		_VERTEX4F cube_v[] = {
@@ -117,7 +117,7 @@ namespace OBJECTS
 
 	void CubeObject::_Draw(float *zb, int *video, int nWidth, int nHeight)
 	{
-		this->rotation += 3.0;
+		this->rotation += 1.3;
 		for(int n = 0; n < this->_mesh.num_i; n++)
 		{
 			_TRIANGLE3I &triangle = this->_mesh.ib[n];
